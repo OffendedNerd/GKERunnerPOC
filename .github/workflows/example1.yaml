@@ -1,16 +1,24 @@
----
-name: Example 1
-on:
-  push:
-    branches: [ main ]
 jobs:
   build:
-    name: Build
     runs-on: self-hosted
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Hello
-      run: |
-        echo "Hello World from self hosted runner!"
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: OffendedNerd
+          password: 9997024446Ab+
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      -
+        name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: OffendedNerd/clockbox:latest
